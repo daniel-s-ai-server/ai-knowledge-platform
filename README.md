@@ -29,7 +29,7 @@ I wanted to answer those questions in practice, not on slides. So I built the wh
 | **Research** | Prompt → web search → fetch sources → summarize → **one** LLM synthesis with numbered citations. | Deliberately *not* an autonomous agent: predictable, auditable, cheap. |
 | **Chat** | ChatGPT-style chat with streaming, conversation history, model choice (OpenAI / Anthropic) and a RAG mode that answers only from your knowledge bases. | Feature parity with Open WebUI, verified against a checklist. |
 | **AI Control Center** | Web UI for dashboard, uploads, search debugging, research, chat and live system KPIs. | A single interface for non-technical users. |
-| **Hermes multi-agent setup** | Specialized agents for coding, UI, content, research and review, built on Hermes and connected via **OpenRouter**. Agents work individually or together, hand over tasks and continue each other's work. Each agent runs on the model that fits the job: open-weight models such as Qwen, DeepSeek and Kimi alongside frontier models from OpenAI and Anthropic. Controlled via **Signal** and reachable from Mac and iPhone over a private network. | No lock-in to one provider and lower cost per task. Memory, skills, agent configuration and workflows stay on my own server; the models run through external providers, so this is not fully private AI. |
+| **Hermes multi-agent setup** | Multi-agent setup built on Hermes and connected via **OpenRouter**. Agents can be assigned to specific tasks, work individually or together, and hand over work to each other. Each agent runs on the model that fits the job: open-weight models such as Qwen, DeepSeek and Kimi alongside frontier models from OpenAI and Anthropic. Controlled via **Signal** and reachable from Mac and iPhone over a private network. | No lock-in to one provider and lower cost per task. Memory, skills, agent configuration and workflows stay on my own server; the models run through external providers, so this is not fully private AI. |
 | **n8n automations** | Automation agent for recurring administrative tasks such as scheduling. | Removes repetitive admin work with simple, maintainable workflows. |
 
 ![AI Control Center, system view](Bildschirmfoto%202026-10-08%20um%2015.40.47.png)
@@ -104,7 +104,8 @@ This is how I'd approach AI adoption in a company: start small, put guardrails i
 
 ## Roadmap
 
-- [x] Specialized agents (code, UI, content, research, review) with their own model each, talking to each other
+- [x] Multi-agent setup with a model per agent, agents able to talk to each other
+- [ ] Dedicated agent roles for recurring tasks
 - [ ] Local embeddings / LLMs as an alternative to cloud APIs
 - [ ] Multi-user access control per knowledge base
 - [ ] PII pseudonymization before data reaches external models
