@@ -1,6 +1,6 @@
 # AI Platform on a €300 Server
 
-> A self-hosted AI platform covering knowledge bases, semantic search, web research, chat and a multi-agent assistant. It runs 24/7 on a mini PC with production-style security, monitoring and a hard cost budget.
+> A self-hosted AI platform covering knowledge bases, semantic search, web research, chat, n8n automations and a multi-agent setup. It runs 24/7 on a mini PC with production-style security, monitoring and a hard cost budget.
 
 **Author:** Daniel Strobel · Account Management & Customer Success leader building practical AI  
 **Status:** In daily use since July 2026 · actively developed
@@ -29,7 +29,8 @@ I wanted to answer those questions in practice, not on slides. So I built the wh
 | **Research** | Prompt → web search → fetch sources → summarize → **one** LLM synthesis with numbered citations. | Deliberately *not* an autonomous agent: predictable, auditable, cheap. |
 | **Chat** | ChatGPT-style chat with streaming, conversation history, model choice (OpenAI / Anthropic) and a RAG mode that answers only from your knowledge bases. | Feature parity with Open WebUI, verified against a checklist. |
 | **AI Control Center** | Web UI for dashboard, uploads, search debugging, research, chat and live system KPIs. | A single interface for non-technical users. |
-| **Hermes agent** | Personal assistant controlled via **Signal** messages and reachable from Mac and iPhone over a private network. Being extended into multiple specialized agents, each with its own model. | Shows multi-agent orchestration with mixed models. |
+| **Hermes multi-agent setup** | Specialized agents for coding, UI, content, research and review, built on Hermes and connected via **OpenRouter**. Agents work individually or together, hand over tasks and continue each other's work. Each agent runs on the model that fits the job: open-weight models such as Qwen, DeepSeek and Kimi alongside frontier models from OpenAI and Anthropic. Controlled via **Signal** and reachable from Mac and iPhone over a private network. | No lock-in to one provider and lower cost per task. Memory, skills, agent configuration and workflows stay on my own server; the models run through external providers, so this is not fully private AI. |
+| **n8n automations** | Automation agent for recurring administrative tasks such as scheduling. | Removes repetitive admin work with simple, maintainable workflows. |
 
 ## Architecture
 
@@ -52,7 +53,7 @@ flowchart LR
     IN[Document inbox<br/>Samba / Filebrowser] --> ING[Ingestion<br/>OCR + chunking + embeddings]
     ING --> PG
 
-    S --> H[Hermes agent] --> M[LLMs via Ollama / OpenRouter]
+    S --> H[Hermes multi-agent setup] --> M[Open-weight + frontier models<br/>via OpenRouter / Ollama]
 
     MON[Prometheus + Grafana] -.monitors.-> API
     N8N[n8n] -.automation.-> API
@@ -61,7 +62,7 @@ flowchart LR
 ## Design decisions I'm proud of
 
 **1. A cost budget that cannot be bypassed.**
-Every paid AI call (embeddings, search, research, chat) is written to one shared cost ledger with **per-run, daily and monthly limits**. If a limit is reached, the job stops *before* the first paid call. The default provider is a free mock, and real models are switched on deliberately. Example: a full end-to-end research run cost **$0.00011**.
+Every paid AI call (embeddings, search, research, chat) is written to one shared cost ledger with **per-run, daily and monthly limits**. If a limit is reached, the job stops *before* the first paid call. The default provider is a free mock, and real models are switched on deliberately. In daily use, running costs stay **very low**.
 
 **2. Security by default, not by afterthought.**
 - No open router ports. External access goes only through Cloudflare Zero Trust, and the agent is reachable only over a private Tailscale network.
@@ -81,7 +82,7 @@ Architecture decision records (ADRs), a disaster-recovery guide, an update proce
 
 ## Tech stack
 
-`Python` · `FastAPI` · `PostgreSQL + pgvector` · `Redis / arq` · `Next.js` · `Docker Compose` · `Tesseract OCR` · `OpenAI text-embedding-3-small` · `OpenAI & Anthropic APIs` · `SearXNG` · `Prometheus` · `Grafana` · `n8n` · `Cloudflare Zero Trust` · `Tailscale` · `Ollama` · `Hermes Agent` · `Ubuntu Server`
+`Python` · `FastAPI` · `PostgreSQL + pgvector` · `Redis / arq` · `Next.js` · `Docker Compose` · `Tesseract OCR` · `OpenAI text-embedding-3-small` · `OpenAI & Anthropic APIs` · `SearXNG` · `Prometheus` · `Grafana` · `n8n` · `Cloudflare Zero Trust` · `Tailscale` · `Ollama` · `Hermes Agent` · `OpenRouter` · `Open-weight models (Qwen, DeepSeek, Kimi)` · `Ubuntu Server`
 
 ## How I built it
 
@@ -93,12 +94,13 @@ This is how I'd approach AI adoption in a company: start small, put guardrails i
 
 - **Data control:** Self-hosting is realistic even on minimal hardware.
 - **Cost control:** AI spend can be capped and made transparent from day one.
+- **Vendor flexibility:** Matching each task to the right model, including open-weight models, avoids lock-in and keeps cost down.
 - **Trust:** Source citations and approval gates make AI output auditable.
 - **Adoption:** A single, simple UI and zero-config knowledge bases lower the barrier for non-technical teams.
 
 ## Roadmap
 
-- [ ] Specialized agents (code, research, architecture) with their own model each, talking to each other
+- [x] Specialized agents (code, UI, content, research, review) with their own model each, talking to each other
 - [ ] Local embeddings / LLMs as an alternative to cloud APIs
 - [ ] Multi-user access control per knowledge base
 - [ ] PII pseudonymization before data reaches external models
