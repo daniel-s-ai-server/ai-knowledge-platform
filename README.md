@@ -32,6 +32,10 @@ I wanted to answer those questions in practice, not on slides. So I built the wh
 | **Hermes multi-agent setup** | Specialized agents for coding, UI, content, research and review, built on Hermes and connected via **OpenRouter**. Agents work individually or together, hand over tasks and continue each other's work. Each agent runs on the model that fits the job: open-weight models such as Qwen, DeepSeek and Kimi alongside frontier models from OpenAI and Anthropic. Controlled via **Signal** and reachable from Mac and iPhone over a private network. | No lock-in to one provider and lower cost per task. Memory, skills, agent configuration and workflows stay on my own server; the models run through external providers, so this is not fully private AI. |
 | **n8n automations** | Automation agent for recurring administrative tasks such as scheduling. | Removes repetitive admin work with simple, maintainable workflows. |
 
+![AI Control Center, system view](Bildschirmfoto%202026-10-08%20um%2015.40.47.png)
+
+*AI Control Center, system view: all 16 services healthy, hard daily and monthly AI budget, Zero Trust access with Tailscale fallback and self-healing.*
+
 ## Architecture
 
 ```mermaid
@@ -75,7 +79,7 @@ Every paid AI call (embeddings, search, research, chat) is written to one shared
 Research reports never enter a knowledge base automatically. There is one explicit approval endpoint, with a confirmation dialog in the UI.
 
 **4. Built for the next person.**
-Architecture decision records (ADRs), a disaster-recovery guide, an update procedure (`make update`), daily, weekly and monthly backups, and a full service inventory. The goal is that anyone can rebuild the server from the documentation alone.
+Architecture decision records (ADRs), a disaster-recovery guide, an update procedure (`make update`), daily, weekly and monthly backups, and a full service inventory. A self-healing watchdog restarts failed services automatically, and Tailscale serves as fallback access if the Cloudflare tunnel is down. The goal is that anyone can rebuild the server from the documentation alone.
 
 **5. Tested against reality.**
 169 backend and 36 frontend tests (Vitest, Playwright E2E), plus live verification against the real infrastructure after every phase.
