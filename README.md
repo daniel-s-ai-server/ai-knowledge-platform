@@ -2,7 +2,7 @@
 
 > A self-hosted AI platform covering knowledge bases, semantic search, web research, chat and a multi-agent assistant. It runs 24/7 on a mini PC with production-style security, monitoring and a hard cost budget.
 
-**Author:** Daniel Strobel · Account Management & Customer Success leader building practical AI
+**Author:** Daniel Strobel · Account Management & Customer Success leader building practical AI  
 **Status:** In daily use since July 2026 · actively developed
 
 > ℹ️ This repository is a **case study**. The working code lives in a private repository because it contains infrastructure details. I'm happy to walk through it in an interview.
