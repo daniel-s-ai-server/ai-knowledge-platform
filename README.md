@@ -1,4 +1,4 @@
-# AI Knowledge Platform on a €300 Server
+# AI Platform on a €300 Server
 
 > A self-hosted AI platform covering knowledge bases, semantic search, web research, chat and a multi-agent assistant. It runs 24/7 on a mini PC with production-style security, monitoring and a hard cost budget.
 
